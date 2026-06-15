@@ -104,7 +104,10 @@ function priceForCycle(p: PlanCard, cycle: Cycle): { primary: string; secondary:
   return { primary: p.monthlyPrimary, secondary: p.monthlySecondary };
 }
 
-async function startCheckout(plan: Plan, cycle: Cycle): Promise<{ ok: boolean; url?: string; error?: string }> {
+async function startCheckout(
+  plan: Plan,
+  cycle: Cycle,
+): Promise<{ ok: boolean; url?: string; upgraded?: boolean; error?: string }> {
   const res = await fetch("/api/stripe/checkout", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -116,11 +119,8 @@ async function startCheckout(plan: Plan, cycle: Cycle): Promise<{ ok: boolean; u
     upgraded?: boolean;
   };
   if (!res.ok) return { ok: false, error: json.error ?? `Failed (${res.status})` };
-  if (json.url) {
-    window.location.href = json.url;
-    return { ok: true };
-  }
-  return { ok: true };
+  if (json.url) return { ok: true, url: json.url };
+  return { ok: true, upgraded: json.upgraded };
 }
 
 function cycleLabel(cycle: Cycle): string {
@@ -199,7 +199,13 @@ export function PlanCards({
         return;
       }
       setChangeDialog(null);
-      if (!result.url) router.refresh();
+      if (result.url) {
+        window.location.assign(result.url);
+        return;
+      }
+      // In-place plan change (existing subscription) — refresh without stale ?checkout=cancel.
+      router.replace("/pricing");
+      router.refresh();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Network error");
     } finally {
