@@ -31,6 +31,10 @@ export async function sendSubscriptionEndedEmail(args: {
       ? formatMoney(args.refundAmountCents, args.currency ?? "usd")
       : "";
 
+  const refundBlock = hasRefund
+    ? `<p>A refund of <strong>${escHtml(refundFormatted)}</strong> for unused account credit has been sent to your original payment method (typically 5–10 business days).</p>`
+    : "";
+
   const html = `
     <div style="font-family: system-ui, sans-serif; max-width: 560px; color: #0f172a;">
       <h1 style="color: #0f172a; font-size: 1.25rem;">Your subscription has ended</h1>

@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   title: "SafeTrack — Drug Recall Alerts",
   description:
     "Know instantly if your medications have been recalled by the FDA. Add prescriptions to your medicine cabinet and receive email alerts when matching recalls are issued.",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({

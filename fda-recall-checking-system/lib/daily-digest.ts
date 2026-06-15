@@ -129,7 +129,7 @@ function buildAlertRowsHtml(matches: DigestMatch[]): string {
 }
 
 function composeMatchesText(matches: DigestMatch[]): string {
-  return matches
+  const rows = matches
     .filter((m) => m.medication_items && m.recalls)
     .map((m) => {
       const med = m.medication_items!;
@@ -142,27 +142,13 @@ function composeMatchesText(matches: DigestMatch[]): string {
         reason: rec.reason_for_recall ?? "See FDA notice",
       };
     });
-  const htmlRows = rows
-    .map(
-      (r) => `
-    <tr>
-      <td style="padding:8px 12px;border-bottom:1px solid #eee">
-        <strong>${esc(r.product)}</strong><br/>
-        <span style="color:#666">${esc(r.manufacturer)} · ${esc(r.cls)}</span><br/>
-        <span style="font-size:13px">${esc(r.reason)}</span><br/>
-        <span style="font-size:12px;color:#888">Recall #${esc(r.recallNumber)}</span>
-      </td>
-    </tr>`,
-    )
-    .join("");
-  const html = `<table style="width:100%;border-collapse:collapse;margin:16px 0">${htmlRows}</table>
-  <p><a href="${appUrl}/notifications" style="color:#0d9488">Review all alerts in your dashboard →</a></p>`;
   const text = rows
     .map(
       (r) =>
         `• ${r.product} (${r.manufacturer}) — ${r.cls}\n  Recall #${r.recallNumber}: ${r.reason}`,
     )
     .join("\n\n");
+  return text;
 }
 
 /** Unread alerts for medications still active in the cabinet (digest must match in-app). */
@@ -180,6 +166,16 @@ export function countDistinctMedications(matches: DigestMatch[]): number {
     keys.add(`${med.product_name}\0${med.manufacturer}`.toLowerCase());
   }
   return keys.size;
+}
+
+function composeMatches(
+  matches: DigestMatch[],
+  _appUrl: string,
+): { html: string; text: string } {
+  return {
+    html: buildAlertRowsHtml(matches),
+    text: composeMatchesText(matches),
+  };
 }
 
 export function composeDigest(args: {
