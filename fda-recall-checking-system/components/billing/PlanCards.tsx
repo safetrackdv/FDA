@@ -306,7 +306,7 @@ export function PlanCards({
       <ConfirmDialog
         open={changeDialog !== null}
         title={changeDialog ? "Confirm plan change" : ""}
-        description="Changes apply immediately. Final billing is calculated by Stripe at confirmation time."
+        description="You will confirm payment on Stripe's secure page. Your plan updates after payment succeeds; proration is calculated by Stripe."
         size="lg"
         details={
           changeDialog ? (
@@ -497,8 +497,9 @@ export function PlanCards({
       {error ? <p className="text-center text-label-md text-error">{error}</p> : null}
 
       <p className="text-center text-label-sm text-on-surface-variant">
-        Upgrades take effect immediately. Cancellations keep access until the end of the
-        current billing period. Payment failures suspend paid features right away.
+        New subscriptions and upgrades are confirmed on Stripe. Plan changes apply after
+        payment succeeds. Cancellations keep access until the end of the current billing
+        period.
       </p>
 
       {showCancel ? (
