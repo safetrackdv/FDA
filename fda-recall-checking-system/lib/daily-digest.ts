@@ -2,6 +2,11 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { loadEmailTemplate, renderEmailTemplate } from "./email-template";
 import { sendEmailQuietly } from "./mailer";
 import { hasPaidPlan, type Plan } from "./plan";
+import {
+  type RecallClassTier,
+  parseRecallClassTier,
+  recallClassLabelForTier,
+} from "./recall-classification";
 import { getEffectivePlan } from "./stripe-billing";
 
 export type DigestCadence = "daily" | "weekly";
