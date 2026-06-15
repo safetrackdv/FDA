@@ -129,7 +129,7 @@ function buildAlertRowsHtml(matches: DigestMatch[]): string {
 }
 
 function composeMatchesText(matches: DigestMatch[]): string {
-  return matches
+  const rows = matches
     .filter((m) => m.medication_items && m.recalls)
     .map((m) => {
       const med = m.medication_items!;
@@ -163,6 +163,7 @@ function composeMatchesText(matches: DigestMatch[]): string {
         `• ${r.product} (${r.manufacturer}) — ${r.cls}\n  Recall #${r.recallNumber}: ${r.reason}`,
     )
     .join("\n\n");
+  return text;
 }
 
 /** Unread alerts for medications still active in the cabinet (digest must match in-app). */
