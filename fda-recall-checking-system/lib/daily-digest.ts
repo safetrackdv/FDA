@@ -168,6 +168,16 @@ export function countDistinctMedications(matches: DigestMatch[]): number {
   return keys.size;
 }
 
+function composeMatches(
+  matches: DigestMatch[],
+  _appUrl: string,
+): { html: string; text: string } {
+  return {
+    html: buildAlertRowsHtml(matches),
+    text: composeMatchesText(matches),
+  };
+}
+
 export function composeDigest(args: {
   userName: string;
   matches: DigestMatch[];
