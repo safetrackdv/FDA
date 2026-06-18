@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/hipaa", label: "HIPAA" },
   { href: "/ccpa", label: "CA Privacy" },
   { href: "/cookies", label: "Cookies" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function LegalFooterLinks() {
