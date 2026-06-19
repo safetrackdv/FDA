@@ -12,6 +12,7 @@ const ITEMS: { href: string; label: string }[] = [
   { href: "/settings/notifications", label: "Notification settings" },
   { href: "/settings/data", label: "Data & privacy" },
   { href: "/pricing", label: "Manage subscription" },
+  { href: "/contact", label: "Contact us" },
 ];
 
 export function UserMenu({ displayName }: Props) {
