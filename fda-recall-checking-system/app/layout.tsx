@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Merriweather, Fira_Sans } from "next/font/google";
+import Script from "next/script";
 import { CookieBanner } from "@/components/CookieBanner";
 import "./globals.css";
+
+const GA_ID = "G-XPNG5PXY31";
 
 const merriweather = Merriweather({
   subsets: ["latin"],
@@ -36,6 +39,13 @@ export default function RootLayout({
       <body className="min-h-screen bg-surface text-on-surface antialiased">
         {children}
         <CookieBanner />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga-init" strategy="afterInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');`}
+        </Script>
       </body>
     </html>
   );
