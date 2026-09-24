@@ -55,9 +55,9 @@ export default async function LandingPage() {
                   FDA Recall Alerts Delivered Before Your Pharmacy Calls.
                 </h1>
                 <p className="mt-6 text-body-lg text-on-surface-variant">
-                  Add prescriptions to your personal medicine cabinet. We&apos;ll
-                  email you the second the FDA publishes a matching recall —
-                  before your pharmacy or the news.
+                  Add prescriptions to your personal medicine cabinet. When the
+                  FDA publishes a matching recall, we&apos;ll email you — free
+                  forever, before your pharmacy or the news.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <Link href="/signup" className="btn-primary px-6 py-3 text-label-md">
@@ -137,8 +137,8 @@ export default async function LandingPage() {
                 },
                 {
                   step: "3",
-                  title: "Get alerted instantly",
-                  body: "Email + in-app notification the moment one of your medications is recalled.",
+                  title: "Get alerted",
+                  body: "Email alerts plus your on-site notification center when one of your medications is recalled.",
                 },
               ].map((s) => (
                 <div key={s.step} className="card">
