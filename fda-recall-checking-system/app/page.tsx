@@ -55,9 +55,9 @@ export default async function LandingPage() {
                   FDA Recall Alerts Delivered Before Your Pharmacy Calls.
                 </h1>
                 <p className="mt-6 text-body-lg text-on-surface-variant">
-                  Add prescriptions to your personal medicine cabinet. We&apos;ll
-                  email you the second the FDA publishes a matching recall —
-                  before your pharmacy or the news.
+                  Add prescriptions to your personal medicine cabinet. When the
+                  FDA publishes a matching recall, we&apos;ll email you — free
+                  forever, before your pharmacy or the news.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <Link href="/signup" className="btn-primary px-6 py-3 text-label-md">
@@ -137,8 +137,8 @@ export default async function LandingPage() {
                 },
                 {
                   step: "3",
-                  title: "Get alerted instantly",
-                  body: "Email + in-app notification the moment one of your medications is recalled.",
+                  title: "Get alerted",
+                  body: "Email alerts plus your on-site notification center when one of your medications is recalled.",
                 },
               ].map((s) => (
                 <div key={s.step} className="card">
@@ -155,9 +155,9 @@ export default async function LandingPage() {
         <section className="bg-primary text-on-primary">
           <div className="mx-auto grid max-w-container grid-cols-2 gap-8 px-margin-mobile py-12 text-center md:grid-cols-4 md:px-margin-desktop">
             <div>
-              <p className="font-display text-headline-md">{(meta?.recallCount ?? 0).toLocaleString("en-US")}</p>
+              <p className="font-display text-headline-md">{(meta?.activeRecallCount ?? 0).toLocaleString("en-US")}</p>
               <p className="mt-1 text-label-sm uppercase opacity-80">
-                Recalls tracked
+                Active recalls
               </p>
             </div>
             <div>
@@ -202,6 +202,8 @@ export default async function LandingPage() {
           <p className="text-label-sm text-on-surface-variant opacity-80">
             FDA data last synced:{" "}
             {meta?.lastSyncedAt ? new Date(meta.lastSyncedAt).toLocaleString() : "Never"}
+            {" · "}
+            {(meta?.recallCount ?? 0).toLocaleString("en-US")} recalls tracked all-time
           </p>
         </div>
       </footer>

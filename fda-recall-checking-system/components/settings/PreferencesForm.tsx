@@ -127,7 +127,7 @@ export function PreferencesForm({
                   <p className="text-label-md text-on-surface">Instant recall alerts</p>
                   <p className="mt-1 text-label-sm text-on-surface-variant">
                     Available on Personal Pro and Family Protection. Free accounts receive a
-                    daily digest instead.
+                    weekly digest instead.
                   </p>
                   <Link
                     href="/pricing"
@@ -138,8 +138,8 @@ export function PreferencesForm({
                 </div>
               )}
               <Toggle
-                label="Daily digest"
-                description="One summary per day — includes matches or an all-clear check."
+                label="Weekly digest"
+                description="One summary per week — includes matches or an all-clear check."
                 checked={prefs.email_digest_enabled}
                 onChange={(v) => set("email_digest_enabled", v)}
               />
@@ -153,7 +153,7 @@ export function PreferencesForm({
         <p className="mt-1 text-body-md text-on-surface-variant">
           In-app alerts in your notification center always show matching recalls. These
           toggles filter email only — instant recall emails (paid plans) and what goes
-          into your daily digest. Class I is always recommended for email.
+          into your weekly digest. Class I is always recommended for email.
         </p>
         <div className="mt-4 divide-y divide-primary/10">
           <Toggle

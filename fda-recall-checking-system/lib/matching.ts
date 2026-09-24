@@ -27,7 +27,7 @@ export async function findRecallsForItem(
     ndc: item.product_ndc,
     lotNumber: item.lot_number,
   });
-  if (result.status === "not_found") return [];
+  if (result.status === "not_found" || result.status === "unknown_product") return [];
   return result.matches;
 }
 
