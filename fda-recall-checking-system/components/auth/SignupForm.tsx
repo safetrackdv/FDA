@@ -17,11 +17,21 @@ export function SignupForm() {
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [showPwd, setShowPwd] = useState(false);
 
+  function emailIsValid(v: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!emailIsValid(email)) {
+      setEmailError("Please enter a valid email address.");
+      return;
+    }
+    setEmailError(null);
     if (!username.trim()) {
       setError("Username is required.");
       return;
@@ -121,10 +131,25 @@ export function SignupForm() {
             required
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (emailError && emailIsValid(e.target.value)) setEmailError(null);
+            }}
+            onBlur={() => {
+              if (email.trim() && !emailIsValid(email)) {
+                setEmailError("Please enter a valid email address.");
+              }
+            }}
+            aria-invalid={emailError ? true : undefined}
+            aria-describedby={emailError ? "email-error" : undefined}
             className="input bg-surface-container-lowest"
             placeholder="name@example.com"
           />
+          {emailError ? (
+            <p id="email-error" className="text-label-sm text-error">
+              {emailError}
+            </p>
+          ) : null}
         </div>
 
         <div className="flex flex-col gap-2">
