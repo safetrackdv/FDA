@@ -187,6 +187,16 @@ export function SignupForm() {
         >
           {loading ? "Creating account…" : "Create account"}
         </button>
+        {!loading && !passwordIsValid(password) ? (
+          <p className="mt-2 text-center text-label-sm text-on-surface-variant">
+            Finish the password requirements above to enable this button.
+          </p>
+        ) : null}
+        {!loading && passwordIsValid(password) && !agreed ? (
+          <p className="mt-2 text-center text-label-sm text-on-surface-variant">
+            Please check the box above to agree to the Terms and Privacy Policy.
+          </p>
+        ) : null}
       </form>
 
       <div className="my-6 flex items-center gap-4">
