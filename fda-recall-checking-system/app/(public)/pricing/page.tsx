@@ -64,7 +64,8 @@ export default async function PricingPage({
           Pick the plan that fits your household
         </h1>
         <p className="mt-3 text-body-md text-on-surface-variant">
-          Free is enough to dip your toe in. Upgrade any time as your cabinet grows.
+          The Free plan is free forever — no card required. Upgrade only if you
+          track more medications or want instant alerts.
         </p>
         {!signedIn ? (
           <p className="mt-4 text-label-md">

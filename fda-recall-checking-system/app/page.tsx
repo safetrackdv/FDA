@@ -34,7 +34,7 @@ export default async function LandingPage() {
                 {displayName.slice(0, 18)}
               </Link>
             ) : (
-              <Link href="/login" className="btn-primary text-label-md whitespace-nowrap">
+              <Link href="/login" className="btn-ghost text-label-md whitespace-nowrap">
                 Sign in
               </Link>
             )}
@@ -67,6 +67,33 @@ export default async function LandingPage() {
                     Quick FDA Recall Check
                   </Link>
                 </div>
+                <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-label-md text-on-surface-variant">
+                  {[
+                    "Free forever for consumers",
+                    "We never sell your data",
+                    "Unsubscribe anytime",
+                  ].map((t) => (
+                    <li key={t} className="flex items-center gap-2">
+                      <svg
+                        aria-hidden="true"
+                        viewBox="0 0 20 20"
+                        className="h-4 w-4 shrink-0 text-primary"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.704 5.296a1 1 0 010 1.408l-7.5 7.5a1 1 0 01-1.408 0l-3.5-3.5a1 1 0 011.408-1.408L8.5 12.09l6.796-6.796a1 1 0 011.408 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3 text-label-md text-on-surface-variant">
+                  Just looking something up? The quick check needs no account —
+                  results in about 30 seconds.
+                </p>
               </div>
               <div className="hidden md:block">
                 <div className="rounded-xl border border-primary/10 bg-surface-container-lowest p-6 shadow-sm">
@@ -78,7 +105,7 @@ export default async function LandingPage() {
                     Dr. Reddy&apos;s Laboratories Limited
                   </p>
                   <p className="mt-4 text-body-md">
-                    Subpotent / out-of-specification — affected lots subject to
+                    Weaker than labeled — affected lots subject to
                     recall.
                   </p>
                   <div className="mt-4 border-t border-primary/10 pt-3 text-label-sm text-on-surface-variant">
@@ -101,12 +128,12 @@ export default async function LandingPage() {
                 {
                   step: "1",
                   title: "Add your medications",
-                  body: "Pick from the FDA NDC directory or type freely. We support brand and generic names.",
+                  body: "Pick from the FDA medication directory or type freely. We support brand and generic names.",
                 },
                 {
                   step: "2",
                   title: "We monitor daily",
-                  body: "Every day we pull the latest FDA enforcement records and match them against your cabinet.",
+                  body: "Every day we pull the latest FDA recall records and match them against your cabinet.",
                 },
                 {
                   step: "3",
@@ -136,7 +163,7 @@ export default async function LandingPage() {
             <div>
               <p className="font-display text-headline-md">{(meta?.ndcCount ?? 0).toLocaleString("en-US")}</p>
               <p className="mt-1 text-label-sm uppercase opacity-80">
-                NDC products
+                Medications tracked
               </p>
             </div>
             <div>
