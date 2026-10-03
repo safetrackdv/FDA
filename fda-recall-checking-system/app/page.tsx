@@ -4,6 +4,7 @@ import { Logo } from "@/components/Logo";
 import { getCurrentUser } from "@/lib/auth";
 import { getMeta } from "@/lib/meta";
 
+export const runtime = "edge"; // TEMPORARY: nodejs SSR 500s on prod
 export default async function LandingPage() {
   const [meta, user] = await Promise.all([getMeta(), getCurrentUser()]);
   const displayName =
