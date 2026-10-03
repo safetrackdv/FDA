@@ -80,10 +80,17 @@ export async function POST(req: Request) {
       getLastSyncedAt(supabase),
     ]);
 
-    // Fire-and-forget log; do not block response.
-    void logQuery(supabase, input, result.status, inputMethod).catch(() => undefined);
+    // Fire-and-forget log; do not block response. Log unknown_product as
+    // not_found so a CHECK constraint on result_status can never reject it.
+    const logStatus =
+      result.status === "unknown_product" ? "not_found" : result.status;
+    void logQuery(supabase, input, logStatus, inputMethod).catch(() => undefined);
 
-    const usedAfter = isAuthed ? usedBefore : usedBefore + 1;
+    // "unknown_product" means the input didn't match any known medication
+    // (typo/nonsense) — it was never a real check, so it must not burn one
+    // of the device's free quick checks.
+    const countsAsCheck = result.status !== "unknown_product";
+    const usedAfter = isAuthed ? usedBefore : usedBefore + (countsAsCheck ? 1 : 0);
     const response = NextResponse.json({
       ...result,
       lastSyncedAt,
@@ -91,7 +98,7 @@ export async function POST(req: Request) {
         ? { unlimited: true }
         : { used: usedAfter, limit: QUICK_CHECK_LIMIT },
     });
-    if (!isAuthed) setQuotaCookie(response, usedAfter);
+    if (!isAuthed && countsAsCheck) setQuotaCookie(response, usedAfter);
     return response;
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";

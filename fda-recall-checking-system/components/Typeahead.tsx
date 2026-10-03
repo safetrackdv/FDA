@@ -44,6 +44,8 @@ type Props<T> = {
   emptyFocusHint?: ReactNode;
   /** Footer when the API indicates more matches exist beyond the result cap. */
   truncatedFooter?: ReactNode;
+  /** Footer shown under search results (e.g. picking guidance). */
+  resultsFooter?: ReactNode;
   /** Shown in the dropdown while a fetch is in flight. */
   loadingMessage?: ReactNode;
   /** Shown when the empty-focus preview returns no rows (not an error). */
@@ -71,6 +73,7 @@ export function Typeahead<T>({
   emptyFocusFooter,
   emptyFocusHint,
   truncatedFooter,
+  resultsFooter,
   loadingMessage = "Searching…",
   emptyFocusEmptyMessage = "No matches found. Try a different search.",
   emptyFocusErrorMessage = "Couldn't load suggestions. Try typing to search.",
@@ -363,6 +366,15 @@ export function Typeahead<T>({
           {activeTruncated && activeFooter && !activeLoading ? (
             <li className="border-t border-slate-200 px-3 py-2 text-label-sm text-on-surface-variant">
               {activeFooter}
+            </li>
+          ) : null}
+          {!activeLoading &&
+          showSearchPanel &&
+          !activeTruncated &&
+          activeItems.length > 0 &&
+          resultsFooter ? (
+            <li className="border-t border-slate-200 px-3 py-2 text-label-sm text-on-surface-variant">
+              {resultsFooter}
             </li>
           ) : null}
         </ul>

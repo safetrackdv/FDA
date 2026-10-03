@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DeleteAccount } from "@/components/settings/DeleteAccount";
 
 export const metadata = { title: "Data & Privacy | SafeTrack" };
 
@@ -31,12 +32,10 @@ export default function DataExportPage() {
         <h2 className="font-display text-headline-sm text-on-surface">Close account</h2>
         <p className="mt-2 text-body-md text-on-surface-variant">
           Permanently removes your profile, cabinet, notifications, and preferences.
-          This cannot be undone. To proceed, email{" "}
-          <a href="mailto:privacy@example.com" className="text-secondary underline">
-            privacy@example.com
-          </a>{" "}
-          from your account address and we&apos;ll process the deletion within 5 business days.
+          This cannot be undone. If you have an active subscription, cancel it under
+          Billing first.
         </p>
+        <DeleteAccount />
       </section>
 
       <p className="text-label-sm text-on-surface-variant">
