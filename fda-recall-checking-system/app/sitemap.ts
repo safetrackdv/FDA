@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SEO_DRUGS } from "@/lib/seo-drugs";
 
-const BASE = "https://safetrackdv.com";
+const BASE = "https://www.safetrackdv.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = ["/", "/check", "/pricing", "/recalls", "/login", "/signup"];
