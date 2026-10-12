@@ -94,6 +94,13 @@ export function ManualInputTab({ onSubmit, submitting }: Props) {
           placeholder={selectedProduct ? "Pick a common maker or type to search" : "Pick a product from the dropdown first"}
           product={selectedProduct || undefined}
         />
+        {selectedProduct ? (
+          <p className="text-label-sm text-on-surface-variant">
+            Only companies that make &ldquo;{selectedProduct}&rdquo; are listed. If
+            yours isn&apos;t here, leave it blank — we&apos;ll still check every
+            recall for this drug.
+          </p>
+        ) : null}
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

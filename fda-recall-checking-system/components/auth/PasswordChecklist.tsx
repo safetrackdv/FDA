@@ -59,6 +59,9 @@ export function PasswordChecklist({
           </li>
         );
       })}
+      <li className="pt-1 text-on-surface-variant">
+        Tip: three random words plus a number and a symbol are easy to remember.
+      </li>
     </ul>
   );
 }

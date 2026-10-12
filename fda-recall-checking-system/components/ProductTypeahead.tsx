@@ -42,6 +42,7 @@ export function ProductTypeahead({
       )}
       placeholder={placeholder}
       autoFocus={autoFocus}
+      resultsFooter="Several similar names? Pick the one exactly as printed on your prescription label."
     />
   );
 }

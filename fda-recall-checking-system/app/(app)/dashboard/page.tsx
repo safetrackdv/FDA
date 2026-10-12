@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { getServerAuthSupabase } from "@/lib/auth";
+import { getServerSupabase } from "@/lib/supabase";
+import { getStaleSyncWarning } from "@/lib/meta";
 
 export const dynamic = "force-dynamic";
 
@@ -29,37 +31,17 @@ async function getCounts(): Promise<Counts> {
   return { cabinet: cabinetRes.count ?? 0, unread: unreadRes.count ?? 0 };
 }
 
-async function getStaleSyncWarning(): Promise<string | null> {
-  const supabase = await getServerAuthSupabase();
-  const { data } = await supabase
-    .from("sync_runs")
-    .select("finished_at, status")
-    .eq("status", "success")
-    .order("finished_at", { ascending: false })
-    .limit(1);
-  const last = data?.[0]?.finished_at as string | undefined;
-  if (!last) return "Recall data has never been synced. Alerts will not fire until the first sync runs.";
-  const hoursAgo = (Date.now() - new Date(last).getTime()) / 1000 / 60 / 60;
-  if (hoursAgo > 48) {
-    const when = new Date(last).toLocaleString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-    });
-    return `Last updated ${when} — that's longer than expected. Alerts may be delayed.`;
-  }
-  return null;
-}
-
-async function getRecentAlerts(): Promise<AlertRow[]> {
-  const supabase = await getServerAuthSupabase();
+async function getRecentAlerts(userId: string | undefined): Promise<AlertRow[]> {
+  if (!userId) return [];
+  // Service-role client scoped to this user: the recalls embed is not
+  // visible through the user-scoped client (RLS).
+  const supabase = getServerSupabase();
   const { data } = await supabase
     .from("notifications")
     .select(
       "id, classification, status, created_at, medication_items(id, product_name, manufacturer), recalls(recall_number, reason_for_recall)",
     )
+    .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(5);
   return (data ?? []) as unknown as AlertRow[];
@@ -73,12 +55,15 @@ function classChip(c: string | null): string {
 }
 
 export default async function DashboardPage() {
+  const authSupabase = await getServerAuthSupabase();
+  const { data: userData } = await authSupabase.auth.getUser();
   const [counts, alerts, staleWarning] = await Promise.all([
     getCounts(),
-    getRecentAlerts(),
+    getRecentAlerts(userData.user?.id),
     getStaleSyncWarning(),
   ]);
   const actionRequired = counts.unread > 0;
+  const isEmpty = counts.cabinet === 0;
 
   return (
     <div className="space-y-8">
@@ -96,6 +81,18 @@ export default async function DashboardPage() {
       ) : null}
 
       {/* Status banner */}
+      {isEmpty ? (
+        <div className="rounded-lg border-2 border-primary/20 bg-surface-container-low p-6">
+          <h2 className="font-display text-headline-sm">Your cabinet is empty</h2>
+          <p className="mt-2 text-body-md">
+            Add your medications to start monitoring — we&apos;ll alert you if
+            the FDA recalls one.
+          </p>
+          <Link href="/cabinet/add" className="btn-primary mt-4 inline-flex">
+            Add your first medication
+          </Link>
+        </div>
+      ) : (
       <div
         className={`rounded-lg border-2 p-6 ${
           actionRequired
@@ -119,6 +116,7 @@ export default async function DashboardPage() {
           </Link>
         ) : null}
       </div>
+      )}
 
       {/* Quick stats */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
