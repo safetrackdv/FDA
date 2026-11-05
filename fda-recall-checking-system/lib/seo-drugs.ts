@@ -37,6 +37,7 @@ export const SEO_DRUGS: SeoDrug[] = [
   { slug: "ranitidine", generic: "ranitidine", brands: ["Zantac"], what: "a heartburn medication withdrawn from the market over NDMA contamination concerns" },
   { slug: "acetaminophen", generic: "acetaminophen", brands: ["Tylenol"], what: "a widely used over-the-counter pain reliever and fever reducer" },
   { slug: "ibuprofen", generic: "ibuprofen", brands: ["Advil", "Motrin"], what: "a widely used over-the-counter NSAID pain reliever" },
+  { slug: "ciprofloxacin", generic: "ciprofloxacin", brands: ["Cipro"], what: "a fluoroquinolone antibiotic prescribed for bacterial infections" },
 ];
 
 export function getSeoDrug(slug: string): SeoDrug | undefined {
