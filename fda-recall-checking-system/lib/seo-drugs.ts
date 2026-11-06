@@ -38,6 +38,7 @@ export const SEO_DRUGS: SeoDrug[] = [
   { slug: "acetaminophen", generic: "acetaminophen", brands: ["Tylenol"], what: "a widely used over-the-counter pain reliever and fever reducer" },
   { slug: "ibuprofen", generic: "ibuprofen", brands: ["Advil", "Motrin"], what: "a widely used over-the-counter NSAID pain reliever" },
   { slug: "ciprofloxacin", generic: "ciprofloxacin", brands: ["Cipro"], what: "a fluoroquinolone antibiotic prescribed for bacterial infections" },
+  { slug: "metoclopramide", generic: "metoclopramide", brands: ["Reglan"], what: "a prescription medication used to treat nausea, vomiting, and gastroparesis by helping the stomach empty" },
 ];
 
 export function getSeoDrug(slug: string): SeoDrug | undefined {
