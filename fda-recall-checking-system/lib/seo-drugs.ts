@@ -39,6 +39,7 @@ export const SEO_DRUGS: SeoDrug[] = [
   { slug: "ibuprofen", generic: "ibuprofen", brands: ["Advil", "Motrin"], what: "a widely used over-the-counter NSAID pain reliever" },
   { slug: "ciprofloxacin", generic: "ciprofloxacin", brands: ["Cipro"], what: "a fluoroquinolone antibiotic prescribed for bacterial infections" },
   { slug: "metoclopramide", generic: "metoclopramide", brands: ["Reglan"], what: "a prescription medication used to treat nausea, vomiting, and gastroparesis by helping the stomach empty" },
+  { slug: "lisdexamfetamine", generic: "lisdexamfetamine", brands: ["Vyvanse"], what: "a prescription stimulant used to treat attention deficit hyperactivity disorder (ADHD)" },
 ];
 
 export function getSeoDrug(slug: string): SeoDrug | undefined {
