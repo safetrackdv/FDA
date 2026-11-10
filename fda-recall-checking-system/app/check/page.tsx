@@ -30,7 +30,7 @@ export default async function CheckPage() {
               {displayName.slice(0, 18)}
             </Link>
           ) : (
-            <Link href="/login" className="btn-primary text-label-md">
+            <Link href="/login" className="btn-ghost text-label-md">
               Sign in
             </Link>
           )}
@@ -47,7 +47,7 @@ export default async function CheckPage() {
               Quick FDA Recall Check
             </h1>
             <p className="mt-2 text-body-md text-on-surface-variant">
-              One-off lookup against the FDA drug recall database.
+              No account needed — look up any drug in about 30 seconds.
             </p>
           </div>
           <div className="card">

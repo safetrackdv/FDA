@@ -64,7 +64,8 @@ export default async function PricingPage({
           Pick the plan that fits your household
         </h1>
         <p className="mt-3 text-body-md text-on-surface-variant">
-          Free is enough to dip your toe in. Upgrade any time as your cabinet grows.
+          The Free plan is free forever — no card required. Upgrade only if you
+          track more medications or want instant alerts.
         </p>
         {!signedIn ? (
           <p className="mt-4 text-label-md">
@@ -112,8 +113,9 @@ export default async function PricingPage({
           <div>
             <dt className="font-medium text-on-surface">Will I be charged today?</dt>
             <dd className="mt-1 text-body-sm text-on-surface-variant">
-              Paid plans are billed through Stripe (test mode in staging). You will enter
-              payment details on Stripe&apos;s secure checkout page.
+              Paid plans are billed through Stripe. New subscriptions use Stripe Checkout;
+              plan changes open Stripe&apos;s secure payment page for any amount due today.
+              Proration is calculated automatically by Stripe.
             </dd>
           </div>
           <div>

@@ -106,23 +106,23 @@ function MedCard({
 }) {
   const unread = alertSummary?.unreadCount ?? 0;
   const classTiers = alertSummary?.classTiers ?? [];
+  const editHref = `/cabinet/${item.id}/edit`;
 
   return (
-    <Link
-      href={`/cabinet/${item.id}/edit`}
-      className={`card block transition hover:bg-surface-container-low ${
+    <div
+      className={`card transition ${
         unread > 0 ? "border-error/40" : ""
       } ${dimmed ? "opacity-80" : ""}`}
     >
       <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
+        <Link href={editHref} className="min-w-0 flex-1 rounded hover:opacity-80">
           <h3 className="font-display text-headline-sm text-on-surface truncate">
             {item.product_name}
           </h3>
           <p className="text-body-md text-on-surface-variant truncate">
             {item.manufacturer}
           </p>
-        </div>
+        </Link>
         {item.manufacturer_unverified ? (
           <span className="chip bg-surface-container-high text-on-surface shrink-0">
             Not monitored
@@ -132,9 +132,13 @@ function MedCard({
             Paused
           </span>
         ) : unread > 0 ? (
-          <div className="flex flex-col items-end gap-1.5 shrink-0">
+          <Link
+            href={`/notifications?item=${item.id}`}
+            className="flex flex-col items-end gap-1.5 shrink-0 rounded hover:opacity-80"
+            aria-label={`View ${unread} alert${unread === 1 ? "" : "s"} for ${item.product_name}`}
+          >
             <span className="chip bg-error/10 text-error">
-              {unread} alert{unread === 1 ? "" : "s"}
+              {unread} alert{unread === 1 ? "" : "s"} →
             </span>
             <div className="flex flex-wrap justify-end gap-1">
               {classTiers.length > 0 ? (
@@ -149,7 +153,7 @@ function MedCard({
                 </span>
               )}
             </div>
-          </div>
+          </Link>
         ) : (
           <span className="chip bg-surface-container-high text-on-surface shrink-0">
             Monitored
@@ -161,21 +165,23 @@ function MedCard({
           Unknown manufacturer — recall monitoring is disabled for this entry.
         </p>
       ) : null}
-      <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-label-sm text-on-surface-variant">
-        <div>
-          <dt className="opacity-70">NDC</dt>
-          <dd className="font-mono">{item.product_ndc ?? "—"}</dd>
-        </div>
-        <div>
-          <dt className="opacity-70">Lot</dt>
-          <dd className="font-mono">{item.lot_number ?? "—"}</dd>
-        </div>
-        <div>
-          <dt className="opacity-70">Added</dt>
-          <dd>{formatDate(item.added_at)}</dd>
-        </div>
-      </dl>
-    </Link>
+      <Link href={editHref} className="mt-4 block rounded hover:opacity-80">
+        <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-label-sm text-on-surface-variant">
+          <div>
+            <dt className="opacity-70">NDC</dt>
+            <dd className="font-mono">{item.product_ndc ?? "—"}</dd>
+          </div>
+          <div>
+            <dt className="opacity-70">Lot</dt>
+            <dd className="font-mono">{item.lot_number ?? "—"}</dd>
+          </div>
+          <div>
+            <dt className="opacity-70">Added</dt>
+            <dd>{formatDate(item.added_at)}</dd>
+          </div>
+        </dl>
+      </Link>
+    </div>
   );
 }
 
@@ -199,7 +205,7 @@ export default async function CabinetPage() {
         <div>
           <h1 className="font-display text-headline-md text-on-surface">Medicine Cabinet</h1>
           <p className="mt-2 text-body-md text-on-surface-variant">
-            Track your medications and get alerted the moment one is recalled.
+            Track your medications and get alerted when one is recalled.
           </p>
         </div>
         <Link href="/cabinet/add" className="btn-primary">

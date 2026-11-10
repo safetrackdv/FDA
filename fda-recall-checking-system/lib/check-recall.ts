@@ -30,7 +30,7 @@ export type RecallMatch = {
   lotMatch: boolean | null;
 };
 
-export type CheckRecallStatus = "recalled" | "possible" | "not_found";
+export type CheckRecallStatus = "recalled" | "possible" | "not_found" | "unknown_product";
 
 export type CheckRecallResult = {
   status: CheckRecallStatus;
@@ -126,6 +126,28 @@ async function exactProductMatches(
   return (data ?? []) as RecallDbRow[];
 }
 
+/**
+ * Does the phrase resemble any known medication in the FDA directory?
+ * Used to tell "no recalls for this drug" apart from "that's not a drug
+ * at all" (typo / nonsense input). Fails open: if the RPC errors we assume
+ * the product is known so a real check is never blocked.
+ */
+async function productKnownInDirectory(
+  supabase: SupabaseClient,
+  productPhrase: string,
+): Promise<boolean> {
+  try {
+    const { data, error } = await supabase.rpc("product_name_suggest", {
+      query: productPhrase,
+      max_results: 1,
+    });
+    if (error) return true;
+    return Array.isArray(data) && data.length > 0;
+  } catch {
+    return true;
+  }
+}
+
 // Manufacturer name → distinctive tokens for whole-word overlap checks.
 // Mirrors the labeler-tokenization in lib/ngram-match.ts so that "Dr. Reddy's
 // Laboratories Limited" (NDC dictionary) is recognized as the same company as
@@ -207,7 +229,15 @@ export async function checkRecall(
   }
   const rows = await exactProductMatches(supabase, productName);
   if (rows.length === 0) {
-    return { status: "not_found", matches: [], query: input };
+    // No recall rows mention this phrase. Distinguish "known drug, no
+    // recalls" (genuine all-clear) from "not a drug at all" (typo/nonsense),
+    // so we never give false reassurance for a misspelled name.
+    const known = await productKnownInDirectory(supabase, productName);
+    return {
+      status: known ? "not_found" : "unknown_product",
+      matches: [],
+      query: input,
+    };
   }
 
   let visible: RecallMatch[] = rows.map((r) => {

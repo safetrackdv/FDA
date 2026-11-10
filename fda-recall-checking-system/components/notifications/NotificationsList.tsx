@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useUnreadNotifications } from "./UnreadNotificationsProvider";
 
@@ -54,16 +55,29 @@ function formatDate(iso: string | null): string {
   }
 }
 
-export function NotificationsList({ initial }: { initial: NotificationRow[] }) {
+export function NotificationsList({
+  initial,
+  itemId = null,
+}: {
+  initial: NotificationRow[];
+  itemId?: number | null;
+}) {
   const [items, setItems] = useState(initial);
   const [filter, setFilter] = useState<Filter>("all");
   const [pendingId, setPendingId] = useState<number | null>(null);
   const { adjustUnreadCount, refreshUnreadCount } = useUnreadNotifications();
 
   const visible = items.filter((n) => {
+    if (itemId != null && n.medication_items?.id !== itemId) return false;
     if (filter === "all") return n.status !== "dismissed";
     return n.status === filter;
   });
+
+  const filteredItemName =
+    itemId != null
+      ? items.find((n) => n.medication_items?.id === itemId)?.medication_items
+          ?.product_name ?? null
+      : null;
 
   const updateStatus = useCallback(
     async (id: number, status: "read" | "unread" | "dismissed") => {
@@ -102,6 +116,22 @@ export function NotificationsList({ initial }: { initial: NotificationRow[] }) {
 
   return (
     <div className="space-y-6">
+      {itemId != null ? (
+        <div className="flex flex-wrap items-center gap-3 rounded-lg border border-primary/10 bg-surface-container-low px-4 py-3">
+          <p className="text-label-md text-on-surface-variant">
+            Showing alerts for{" "}
+            <span className="font-semibold text-on-surface">
+              {filteredItemName ?? "this medication"}
+            </span>
+          </p>
+          <Link
+            href="/notifications"
+            className="text-label-md text-secondary hover:underline"
+          >
+            Show all alerts
+          </Link>
+        </div>
+      ) : null}
       <div className="flex flex-wrap items-center gap-2 border-b border-primary/10 pb-3">
         {(["all", "unread", "read"] as const).map((f) => (
           <button
@@ -160,9 +190,18 @@ export function NotificationsList({ initial }: { initial: NotificationRow[] }) {
                     {n.recalls?.reason_for_recall ?? "See FDA notice"}
                   </p>
                   <p className="mt-2 text-label-sm text-on-surface-variant">
-                    Recall #{n.recalls?.recall_number} · {n.recalls?.recalling_firm} · initiated{" "}
+                    Recall #{n.recalls?.recall_number ?? "—"} ·{" "}
+                    {n.recalls?.recalling_firm ?? "—"} · initiated{" "}
                     {formatDate(n.recalls?.recall_initiation_date ?? null)}
                   </p>
+                  {n.recalls?.recall_number ? (
+                    <Link
+                      href={`/recalls/${encodeURIComponent(n.recalls.recall_number)}`}
+                      className="mt-2 inline-block text-label-md font-semibold text-secondary hover:underline"
+                    >
+                      View full FDA recall →
+                    </Link>
+                  ) : null}
                 </div>
                 <div className="flex shrink-0 gap-2 md:flex-col">
                   {isUnread ? (

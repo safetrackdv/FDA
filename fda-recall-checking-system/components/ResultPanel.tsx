@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
-import type { CheckRecallResult, RecallMatch } from "@/lib/check-recall";
+import type { CheckRecallResult, CheckRecallInput, RecallMatch } from "@/lib/check-recall";
 import { recallClassChipClass } from "@/lib/recall-classification";
 
 type Props = {
@@ -44,7 +44,14 @@ function matchRank(m: RecallMatch): number {
   let score = m.productScore + m.firmScore;
   if (m.ndcExact) score += 10;
   if (m.lotMatch === true) score += 5;
+  // Active recalls first — closed (terminated/completed) records are
+  // reference material, not the alarming headline.
+  if (isActiveRecallStatus(m.status)) score += 3;
   return score;
+}
+
+function isActiveRecallStatus(s: string | null): boolean {
+  return /ongoing|pending/i.test(s ?? "");
 }
 
 function sortMatches(matches: RecallMatch[]): RecallMatch[] {
@@ -198,10 +205,27 @@ function MatchCard({ m }: { m: RecallMatch }) {
 function StatusBanner({
   status,
   ndcSearched,
+  query,
+  matches,
 }: {
   status: CheckRecallResult["status"];
   ndcSearched?: boolean;
+  query: CheckRecallInput;
+  matches: RecallMatch[];
 }) {
+  if (status === "unknown_product") {
+    return (
+      <div className="rounded-lg border-2 border-secondary bg-secondary-fixed p-6 text-on-secondary-fixed-variant">
+        <h2 className="font-display text-headline-sm">We couldn&apos;t find that medication</h2>
+        <p className="mt-2 text-body-md">
+          &ldquo;{query.productName}&rdquo; didn&apos;t match anything in the FDA
+          medication directory. Check the spelling, or pick a name from the
+          dropdown suggestions as you type.
+        </p>
+      </div>
+    );
+  }
+
   if (status === "recalled") {
     return (
       <div className="rounded-lg border-2 border-error bg-error-container p-6 text-on-error-container">
@@ -215,6 +239,9 @@ function StatusBanner({
   }
 
   if (status === "possible") {
+    const allClosed =
+      matches.length > 0 &&
+      matches.every((m) => m.status && !isActiveRecallStatus(m.status));
     return (
       <div className="rounded-lg border-2 border-secondary bg-secondary-fixed p-6 text-on-secondary-fixed-variant">
         <h2 className="font-display text-headline-sm">Possible Recall Match — Needs More Info</h2>
@@ -222,6 +249,12 @@ function StatusBanner({
           We found similar recall records but cannot confirm they apply to your
           medication. Add an NDC and lot number for a more precise answer.
         </p>
+        {allClosed ? (
+          <p className="mt-2 text-body-md">
+            Note: these are closed recall records (terminated or completed) —
+            shown for reference, not as an active threat.
+          </p>
+        ) : null}
       </div>
     );
   }
@@ -256,6 +289,10 @@ function ResultCta({
   status: CheckRecallResult["status"];
   isLoggedIn: boolean;
 }) {
+  // Nothing meaningful to upsell when we couldn't identify the medication —
+  // the "Check another" button below is the right next step.
+  if (status === "unknown_product") return null;
+
   if (isLoggedIn) {
     if (status !== "recalled") return null;
     return (
@@ -329,7 +366,12 @@ export function ResultPanel({ result, onReset, isLoggedIn = false }: Props) {
         </button>
       </div>
 
-      <StatusBanner status={status} ndcSearched={result.ndcSearched} />
+      <StatusBanner
+        status={status}
+        ndcSearched={result.ndcSearched}
+        query={result.query}
+        matches={sortedMatches}
+      />
 
       <ResultCta status={status} isLoggedIn={isLoggedIn} />
 

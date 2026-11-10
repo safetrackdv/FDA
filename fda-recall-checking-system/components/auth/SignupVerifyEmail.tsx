@@ -72,6 +72,15 @@ export function SignupVerifyEmail({ email }: Props) {
         </p>
       </div>
 
+      <div className="rounded-lg border border-primary/10 bg-surface-container-low px-4 py-3 text-left">
+        <p className="font-medium text-on-surface">While you wait — here&apos;s what&apos;s next</p>
+        <ul className="mt-2 list-inside list-disc space-y-1 text-label-sm text-on-surface-variant">
+          <li>Add your medications to your personal medicine cabinet</li>
+          <li>We check the FDA recall database every day</li>
+          <li>You get an email the moment one of your drugs is recalled</li>
+        </ul>
+      </div>
+
       <div className="rounded-lg border border-primary/10 bg-surface-container-low px-4 py-3 text-left text-label-sm text-on-surface-variant">
         <p className="font-medium text-on-surface">Didn&apos;t get it?</p>
         <ul className="mt-2 list-inside list-disc space-y-1">

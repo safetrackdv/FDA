@@ -4,6 +4,7 @@ import Script from "next/script";
 import { CookieBanner } from "@/components/CookieBanner";
 import "./globals.css";
 
+export const runtime = "edge"; // TEMPORARY: nodejs page SSR 500s on prod (2026-10-03)
 const GA_ID = "G-XPNG5PXY31";
 
 const merriweather = Merriweather({
