@@ -40,6 +40,7 @@ export const SEO_DRUGS: SeoDrug[] = [
   { slug: "ciprofloxacin", generic: "ciprofloxacin", brands: ["Cipro"], what: "a fluoroquinolone antibiotic prescribed for bacterial infections" },
   { slug: "metoclopramide", generic: "metoclopramide", brands: ["Reglan"], what: "a prescription medication used to treat nausea, vomiting, and gastroparesis by helping the stomach empty" },
   { slug: "lisdexamfetamine", generic: "lisdexamfetamine", brands: ["Vyvanse"], what: "a prescription stimulant used to treat attention deficit hyperactivity disorder (ADHD)" },
+  { slug: "vancomycin", generic: "vancomycin", brands: ["Vancocin"], what: "an antibiotic used to treat serious bacterial infections" },
 ];
 
 export function getSeoDrug(slug: string): SeoDrug | undefined {
@@ -51,3 +52,4 @@ export function drugDisplayName(drug: SeoDrug): string {
   const generic = drug.generic.charAt(0).toUpperCase() + drug.generic.slice(1);
   return drug.brands.length > 0 ? `${generic} (${drug.brands.join(", ")})` : generic;
 }
+
