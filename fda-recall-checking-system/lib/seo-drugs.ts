@@ -41,6 +41,7 @@ export const SEO_DRUGS: SeoDrug[] = [
   { slug: "metoclopramide", generic: "metoclopramide", brands: ["Reglan"], what: "a prescription medication used to treat nausea, vomiting, and gastroparesis by helping the stomach empty" },
   { slug: "lisdexamfetamine", generic: "lisdexamfetamine", brands: ["Vyvanse"], what: "a prescription stimulant used to treat attention deficit hyperactivity disorder (ADHD)" },
   { slug: "vancomycin", generic: "vancomycin", brands: ["Vancocin"], what: "an antibiotic used to treat serious bacterial infections" },
+  { slug: "amiodarone", generic: "amiodarone", brands: ["Cordarone"], what: "a heart rhythm medication used to treat irregular heartbeat" },
 ];
 
 export function getSeoDrug(slug: string): SeoDrug | undefined {
