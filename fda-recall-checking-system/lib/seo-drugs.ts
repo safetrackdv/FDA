@@ -42,6 +42,7 @@ export const SEO_DRUGS: SeoDrug[] = [
   { slug: "lisdexamfetamine", generic: "lisdexamfetamine", brands: ["Vyvanse"], what: "a prescription stimulant used to treat attention deficit hyperactivity disorder (ADHD)" },
   { slug: "vancomycin", generic: "vancomycin", brands: ["Vancocin"], what: "an antibiotic used to treat serious bacterial infections" },
   { slug: "amiodarone", generic: "amiodarone", brands: ["Cordarone"], what: "a heart rhythm medication used to treat irregular heartbeat" },
+  { slug: "propranolol", generic: "propranolol", brands: ["Inderal", "Inderal LA"], what: "a beta-blocker used for high blood pressure, chest pain, and irregular heartbeat" },
 ];
 
 export function getSeoDrug(slug: string): SeoDrug | undefined {
