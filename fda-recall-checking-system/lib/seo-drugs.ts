@@ -43,6 +43,7 @@ export const SEO_DRUGS: SeoDrug[] = [
   { slug: "vancomycin", generic: "vancomycin", brands: ["Vancocin"], what: "an antibiotic used to treat serious bacterial infections" },
   { slug: "amiodarone", generic: "amiodarone", brands: ["Cordarone"], what: "a heart rhythm medication used to treat irregular heartbeat" },
   { slug: "propranolol", generic: "propranolol", brands: ["Inderal", "Inderal LA"], what: "a beta-blocker used for high blood pressure, chest pain, and irregular heartbeat" },
+  { slug: "sumatriptan-naproxen", generic: "sumatriptan", brands: ["Treximet"], what: "a migraine medication that combines a triptan with an anti-inflammatory pain reliever" },
 ];
 
 export function getSeoDrug(slug: string): SeoDrug | undefined {
