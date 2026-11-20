@@ -67,8 +67,13 @@ export async function runSync(lookbackDays: number): Promise<SyncResult> {
   try {
     const until = new Date();
     const since = new Date(until.getTime() - lookbackDays * 24 * 60 * 60 * 1000);
+    // Query by report_date (when OpenFDA publishes the record), not
+    // recall_initiation_date: OpenFDA can publish a record weeks after the
+    // firm initiated it (e.g. Safecor D-0075-2027, initiated 2026-10-06 but
+    // reported 2026-11-04), and an initiation-date window permanently misses
+    // such late-published records once they age out of the lookback.
     const search = dateRangeClause(
-      "recall_initiation_date",
+      "report_date",
       isoDate(since),
       isoDate(until),
     );
