@@ -44,6 +44,7 @@ export const SEO_DRUGS: SeoDrug[] = [
   { slug: "amiodarone", generic: "amiodarone", brands: ["Cordarone"], what: "a heart rhythm medication used to treat irregular heartbeat" },
   { slug: "propranolol", generic: "propranolol", brands: ["Inderal", "Inderal LA"], what: "a beta-blocker used for high blood pressure, chest pain, and irregular heartbeat" },
   { slug: "sumatriptan-naproxen", generic: "sumatriptan", brands: ["Treximet"], what: "a migraine medication that combines a triptan with an anti-inflammatory pain reliever" },
+  { slug: "sterile-water", generic: "sterile water", brands: [], what: "a sterile liquid used to dilute and mix medicines for injection" },
 ];
 
 export function getSeoDrug(slug: string): SeoDrug | undefined {
